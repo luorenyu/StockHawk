@@ -31,5 +31,8 @@
 
     <string name="toast_stock_added_no_connectivity">Symbol %s added. Will refresh when network available.</string>
     <string name="toast_no_connectivity">Will refresh when network available.</string>
+    <string name="error_stock_not_exist">Sorry your stock symbol is not current，Please check it！</string>
+    <string name="error_duplicate_add">Symbol %s is already exist on your list!</string>
+    <string name="error_connected_server">update stock price failed!</string>
 
 </resources>

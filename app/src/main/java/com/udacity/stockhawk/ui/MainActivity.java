@@ -1,6 +1,8 @@
 package com.udacity.stockhawk.ui;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -20,9 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.udacity.stockhawk.R;
+import com.udacity.stockhawk.RequestDataBroadcastReceiver;
 import com.udacity.stockhawk.data.Contract;
 import com.udacity.stockhawk.data.PrefUtils;
 import com.udacity.stockhawk.sync.QuoteSyncJob;
+import com.udacity.stockhawk.utils.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,15 +47,39 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @BindView(R.id.error)
     TextView error;
     private StockAdapter adapter;
-
+    RequestDataBroadcastReceiver mResultCodeReceiver;
     @Override
     public void onClick(String symbol) {
         Timber.d("Symbol clicked: %s", symbol);
+        Intent intent=new Intent(this,KlineActivity.class);
+        intent.putExtra("symbol",symbol);
+        startActivity(intent);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mResultCodeReceiver = new RequestDataBroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                int msg = intent.getExtras().getInt("msg");
+                switch (msg){
+                    case QuoteSyncJob.ADD_STOCK_FAILED:
+                        ToastUtil.showShort(context,getString(R.string.error_stock_not_exist));
+                        break;
+                    case QuoteSyncJob.DUPLICATE_ADD:
+                        String symbol= intent.getExtras().getString("symbol");
+                        ToastUtil.showShort(context,getString(R.string.error_duplicate_add,symbol));
+                        swipeRefreshLayout.setRefreshing(false);
+                        break;
+                    case QuoteSyncJob.CONNECTION_SERVER_ERROR:
+                        ToastUtil.showShort(context,getString(R.string.error_connected_server));
+                        break;
+                }
+            }
+        };
+        IntentFilter intentFilter = new IntentFilter(QuoteSyncJob.ACTION_DATA_UPDATED);
+        registerReceiver(mResultCodeReceiver,intentFilter);
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -82,6 +110,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }).attachToRecyclerView(stockRecyclerView);
 
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mResultCodeReceiver);
     }
 
     private boolean networkUp() {
@@ -142,7 +176,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         swipeRefreshLayout.setRefreshing(false);
-
         if (data.getCount() != 0) {
             error.setVisibility(View.GONE);
         }

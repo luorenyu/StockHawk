@@ -8,9 +8,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Looper;
+import android.support.annotation.IntDef;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.google.common.graph.ElementOrder;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.data.Contract;
 import com.udacity.stockhawk.data.PrefUtils;
+import com.udacity.stockhawk.utils.ToastUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,16 +40,22 @@ import yahoofinance.quotes.stock.StockQuote;
 public final class QuoteSyncJob {
 
     private static final int ONE_OFF_ID = 2;
-    private static final String ACTION_DATA_UPDATED = "com.udacity.stockhawk.ACTION_DATA_UPDATED";
+    public static final String ACTION_DATA_UPDATED = "com.udacity.stockhawk.ACTION_DATA_UPDATED";
     private static final int PERIOD = 300000;
     private static final int INITIAL_BACKOFF = 10000;
     private static final int PERIODIC_ID = 1;
     private static final int YEARS_OF_HISTORY = 2;
 
+    public static final int ADD_STOCK_FAILED=0;
+    public static final int DUPLICATE_ADD=1;
+    public static final int CONNECTION_SERVER_ERROR=2;
+
+
     private QuoteSyncJob() {
     }
 
     static void getQuotes(Context context) {
+        int msg=-1;
 
         Timber.d("Running sync job");
 
@@ -62,6 +77,7 @@ public final class QuoteSyncJob {
             }
 
             Map<String, Stock> quotes = YahooFinance.get(stockArray);
+
             Iterator<String> iterator = stockCopy.iterator();
 
             Timber.d(quotes.toString());
@@ -73,7 +89,16 @@ public final class QuoteSyncJob {
 
 
                 Stock stock = quotes.get(symbol);
+                if (stock.getQuote().getPrice()==null){
+                    msg=ADD_STOCK_FAILED;
+                    PrefUtils.removeStock(context,symbol);
+                    continue;
+                }
                 StockQuote quote = stock.getQuote();
+                StringBuilder quoteBuilder = new StringBuilder();
+                Gson gsonQuote = new Gson();
+                String strQuote = gsonQuote.toJson(quote);
+                quoteBuilder.append(strQuote);
 
                 float price = quote.getPrice().floatValue();
                 float change = quote.getChange().floatValue();
@@ -84,22 +109,27 @@ public final class QuoteSyncJob {
                 List<HistoricalQuote> history = stock.getHistory(from, to, Interval.WEEKLY);
 
                 StringBuilder historyBuilder = new StringBuilder();
+                Gson gson = new Gson();
+                String s = gson.toJson(history);
+                historyBuilder.append(s);
 
-                for (HistoricalQuote it : history) {
-                    historyBuilder.append(it.getDate().getTimeInMillis());
-                    historyBuilder.append(", ");
-                    historyBuilder.append(it.getClose());
-                    historyBuilder.append("\n");
-                }
+//                for (HistoricalQuote it : history) {
+//                    Gson gson = new Gson();
+//                    String json = gson.toJson(it);
+//                    historyBuilder.append(it.getDate().getTimeInMillis());
+//                    historyBuilder.append(", ");
+//                    historyBuilder.append(it.getClose());
+//                    historyBuilder.append("\n");
+//                }
+
 
                 ContentValues quoteCV = new ContentValues();
                 quoteCV.put(Contract.Quote.COLUMN_SYMBOL, symbol);
                 quoteCV.put(Contract.Quote.COLUMN_PRICE, price);
                 quoteCV.put(Contract.Quote.COLUMN_PERCENTAGE_CHANGE, percentChange);
                 quoteCV.put(Contract.Quote.COLUMN_ABSOLUTE_CHANGE, change);
-
-
                 quoteCV.put(Contract.Quote.COLUMN_HISTORY, historyBuilder.toString());
+                quoteCV.put(Contract.Quote.COLUMN_QUOTE,quoteBuilder.toString());
 
                 quoteCVs.add(quoteCV);
 
@@ -111,9 +141,14 @@ public final class QuoteSyncJob {
                             quoteCVs.toArray(new ContentValues[quoteCVs.size()]));
 
             Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED);
+            dataUpdatedIntent.putExtra("msg",msg);
             context.sendBroadcast(dataUpdatedIntent);
 
         } catch (IOException exception) {
+            msg=CONNECTION_SERVER_ERROR;
+            Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED);
+            dataUpdatedIntent.putExtra("msg",msg);
+            context.sendBroadcast(dataUpdatedIntent);
             Timber.e(exception, "Error fetching stock quotes");
         }
     }

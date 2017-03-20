@@ -1,10 +1,12 @@
 package com.udacity.stockhawk.data;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.udacity.stockhawk.R;
+import com.udacity.stockhawk.sync.QuoteSyncJob;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -42,6 +44,13 @@ public final class PrefUtils {
         Set<String> stocks = getStocks(context);
 
         if (add) {
+            if (stocks.contains(symbol.toUpperCase())){
+                Intent dataUpdatedIntent = new Intent(QuoteSyncJob.ACTION_DATA_UPDATED);
+                dataUpdatedIntent.putExtra("symbol",symbol.toUpperCase());
+                dataUpdatedIntent.putExtra("msg", QuoteSyncJob.DUPLICATE_ADD);
+                context.sendBroadcast(dataUpdatedIntent);
+                return;
+            }
             stocks.add(symbol);
         } else {
             stocks.remove(symbol);
