@@ -144,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         } else {
             error.setVisibility(View.GONE);
         }
+        error.setContentDescription(error.getText());
     }
 
     public void button(@SuppressWarnings("UnusedParameters") View view) {

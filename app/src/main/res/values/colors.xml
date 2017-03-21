@@ -17,4 +17,6 @@
     <color name="marker_bg">#1C232E</color>
     <color name="white">#ffffff</color>
 
+    <color name="activated">#E0E0E0</color>
+
 </resources>

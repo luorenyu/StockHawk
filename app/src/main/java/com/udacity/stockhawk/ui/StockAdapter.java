@@ -3,6 +3,7 @@ package com.udacity.stockhawk.ui;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,9 +87,20 @@ class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
         if (PrefUtils.getDisplayMode(context)
                 .equals(context.getString(R.string.pref_display_mode_absolute_key))) {
             holder.change.setText(change);
+            holder.change.setContentDescription(cursor.getString(Contract.Quote.POSITION_SYMBOL)
+                    +context.getString(R.string.content_des_price_gains)+change);
         } else {
             holder.change.setText(percentage);
+            holder.change.setContentDescription(cursor.getString(Contract.Quote.POSITION_SYMBOL)
+                    +context.getString(R.string.content_des_percent_gains)+percentage);
         }
+
+        holder.symbol.setContentDescription(cursor.getString(Contract.Quote.POSITION_SYMBOL));
+        holder.price.setContentDescription(cursor.getString(Contract.Quote.POSITION_SYMBOL)
+                +context.getString(R.string.content_des_price)
+                +cursor.getFloat(Contract.Quote.POSITION_PRICE)
+                +context.getString(R.string.content_des_price_unit));
+
 
 
     }
@@ -122,6 +134,7 @@ class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
+            itemView.setBackgroundColor(Color.TRANSPARENT);
         }
 
         @Override

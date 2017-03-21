@@ -33,7 +33,7 @@ public class BarMarkerView extends MarkerView {
     public void refreshContent(Entry e, Highlight highlight) {
         marker_date.setVisibility(View.GONE);
         HistoricalQuote historicalQuote= mDataList.get(highlight.getXIndex());
-        marker_AD.setText("成交量："+historicalQuote.getVolume());
+        marker_AD.setText(getContext().getString(R.string.volume)+historicalQuote.getVolume());
         marker_AD.setTextColor(Color.parseColor("#E7B448"));
    }
 

@@ -3,4 +3,11 @@
     <dimen name="markview_space">3dp</dimen>
     <dimen name="markview_date_size">12sp</dimen>
 
+    <dimen name="widget_default_width">250dp</dimen>
+    <dimen name="widget_default_height">180dp</dimen>
+    <dimen name="widget_min_resize_width">220dp</dimen>
+    <dimen name="widget_min_residze_height">@dimen/widget_default_height</dimen>
+    <dimen name="widget_margin">8dp</dimen>
+    <dimen name="widget_min_resize_height">180dp</dimen>
+
 </resources>

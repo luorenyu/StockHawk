@@ -37,6 +37,7 @@ import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.data.Contract;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -88,6 +89,7 @@ public class KlineActivity extends AppCompatActivity {
 
         }
     };
+    private CombMarkerView combMarkerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,7 +178,7 @@ public class KlineActivity extends AppCompatActivity {
         combinedchart.setScaleYEnabled(false);
         combinedchart.setExtraRightOffset(30);
 
-        Legend combinedchartLegend = combinedchart.getLegend();
+        final Legend combinedchartLegend = combinedchart.getLegend();
         combinedchartLegend.setEnabled(false);
         //bar x y轴
         xAxisK = combinedchart.getXAxis();
@@ -259,12 +261,13 @@ public class KlineActivity extends AppCompatActivity {
     }
 
     private void setMarkerView(List<HistoricalQuote> mData){
-        CombMarkerView combMarkerView = new CombMarkerView(KlineActivity.this, R.layout.mark_view);
+        combMarkerView = new CombMarkerView(KlineActivity.this, R.layout.mark_view);
         BarMarkerView barMarkerView = new BarMarkerView(KlineActivity.this, R.layout.mark_view);
         combinedchart.setMarkerView(combMarkerView);
         barChart.setMarkerView(barMarkerView);
         combMarkerView.setData(mData);
         barMarkerView.setData(mData);
+
     }
 
     private void setData(List<HistoricalQuote> mData) throws IOException {
@@ -377,11 +380,8 @@ public class KlineActivity extends AppCompatActivity {
         combinedchart.moveViewToX(kLineDatas.size() - 1);
         barChart.moveViewToX(kLineDatas.size() - 1);
         setOffset();
-
-/****************************************************************************************
- 此处解决方法来源于CombinedChartDemo，k线图y轴显示问题，图表滑动后才能对齐的bug，希望有人给出解决方法
- (注：此bug现已修复，感谢和chenguang79一起研究)
- ****************************************************************************************/
+        barChart.setContentDescription(getString(R.string.content_des_barchart)+mData.get(0).getSymbol());
+        combinedchart.setContentDescription(getString(R.string.content_des_combinedchart)+mData.get(0).getSymbol());
 
         handler.sendEmptyMessageDelayed(0, 300);
 

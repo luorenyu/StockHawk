@@ -34,5 +34,21 @@
     <string name="error_stock_not_exist">Sorry your stock symbol is not current，Please check it！</string>
     <string name="error_duplicate_add">Symbol %s is already exist on your list!</string>
     <string name="error_connected_server">update stock price failed!</string>
+    <string name="volume">Volume:</string>
+    <string name="green">#00C853</string>
+    <string name="red">#D50000</string>
+
+    <!--content describe-->
+    <string name="content_des_float_button">Add a new Stock</string>
+    <string name="content_des_dialog_stock">input your stock symbol here,for example you can input GOOG!</string>
+    <string name="content_des_combmarkerview_start" >Stock</string>
+    <string name="content_des_combmarkerview_end" >information</string>
+    <string name="content_des_stock_gains">stock gains</string>
+    <string name="content_des_barchart">this is a trading volume bar chart of</string>
+    <string name="content_des_combinedchart">this is k line chart of</string>
+    <string name="content_des_price">\'s latest price is</string>
+    <string name="content_des_price_unit">dollars</string>
+    <string name="content_des_price_gains">\'s  gains price is</string>
+    <string name="content_des_percent_gains">\'s gain percent is</string>
 
 </resources>

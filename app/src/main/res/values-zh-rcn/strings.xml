@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">股票雄鹰</string>
+
+    <string name="pref_stocks_initialized_key" translatable="false">initialized</string>
+
+    <string name="pref_stocks_key">stocks</string>
+
+
+    <string name="pref_display_mode_key">displayMode</string>
+    <string name="pref_display_mode_default">@string/pref_display_mode_percentage_key</string>
+
+    <string name="pref_display_mode_absolute_key">absolute</string>
+    <string name="pref_display_mode_percentage_key">percentage</string>
+
+    <string name="default_stocks_yahoo">YHOO</string>
+    <string name="default_stocks_apple">AAPL</string>
+    <string name="default_stocks_microsoft">MSFT</string>
+    <string name="default_stocks_facebook">FB</string>
+
+
+    <string name="action_change_units">@string/pref_display_mode_key</string>
+
+
+    <string name="dialog_title">添加股票</string>
+    <string name="dialog_hint">输入股票代码 (例如：GOOG)</string>
+    <string name="dialog_cancel">取消</string>
+    <string name="dialog_add">确定</string>
+
+    <string name="error_no_network">网络连接失败，请保证网络连接后，再刷新数据.</string>
+    <string name="error_no_stocks">您还未添加股票，请点击添加按钮添加.</string>
+
+    <string name="toast_stock_added_no_connectivity">请连接网络再添加股票 %s</string>
+    <string name="toast_no_connectivity">请检查网络连接，再进行刷新！</string>
+    <string name="error_stock_not_exist">对不起，您的股票代码不正确，请检查后再试！</string>
+    <string name="error_duplicate_add">股票 %s 已经添加至您的列表，请仔细查阅！</string>
+    <string name="error_connected_server">更新股票价格失败！</string>
+    <string name="volume">成交量:</string>
+    <string name="green">#00C853</string>
+    <string name="red">#D50000</string>
+
+
+    <string name="content_des_float_button">添加新股票</string>
+    <string name="content_des_dialog_stock">在此处输入您的股票代码，例如GOOG！</string>
+    <string name="content_des_combmarkerview_start" >股票</string>
+    <string name="content_des_combmarkerview_end" >的相关信息</string>
+    <string name="content_des_stock_gains">收益</string>
+    <string name="content_des_barchart">这是一个成交量柱状图关于</string>
+    <string name="content_des_combinedchart">这是一个k线图关于</string>
+    <string name="content_des_price_unit">美元</string>
+    <string name="content_des_percent_gains">的收益百分比是</string>
+    <string name="content_des_price">的最新价格是</string>
+    <string name="content_des_price_gains">的收益价格是</string>
+
+
+</resources>

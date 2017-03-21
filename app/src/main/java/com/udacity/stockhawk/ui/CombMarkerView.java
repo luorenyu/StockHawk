@@ -2,7 +2,6 @@ package com.udacity.stockhawk.ui;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.view.View;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.components.MarkerView;
@@ -46,6 +45,12 @@ public class CombMarkerView extends MarkerView {
         DecimalFormat decimalFormat=new DecimalFormat("0.00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
         String p=decimalFormat.format(t*100);
         marker_AD.setText(p+"%");
+        String contentDes=getContext().getString(R.string.content_des_combmarkerview_start)
+                +historicalQuote.getSymbol()+formatDate
+                +getContext().getString(R.string.content_des_combmarkerview_end)
+                +getContext().getString(R.string.content_des_stock_gains)+p+"%"
+                +getContext().getString(R.string.volume)+historicalQuote.getVolume();
+        this.setContentDescription(contentDes);
 
    }
 
