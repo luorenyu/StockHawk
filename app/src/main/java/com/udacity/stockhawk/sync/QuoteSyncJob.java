@@ -89,7 +89,7 @@ public final class QuoteSyncJob {
 
 
                 Stock stock = quotes.get(symbol);
-                if (stock.getQuote().getPrice()==null){
+                if (stock==null||stock.getQuote().getPrice()==null){
                     msg=ADD_STOCK_FAILED;
                     PrefUtils.removeStock(context,symbol);
                     continue;
@@ -112,15 +112,6 @@ public final class QuoteSyncJob {
                 Gson gson = new Gson();
                 String s = gson.toJson(history);
                 historyBuilder.append(s);
-
-//                for (HistoricalQuote it : history) {
-//                    Gson gson = new Gson();
-//                    String json = gson.toJson(it);
-//                    historyBuilder.append(it.getDate().getTimeInMillis());
-//                    historyBuilder.append(", ");
-//                    historyBuilder.append(it.getClose());
-//                    historyBuilder.append("\n");
-//                }
 
 
                 ContentValues quoteCV = new ContentValues();

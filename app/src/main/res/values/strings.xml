@@ -2,23 +2,18 @@
     <string name="app_name">Stock Hawk</string>
 
     <string name="pref_stocks_initialized_key" translatable="false">initialized</string>
-
-    <string name="pref_stocks_key">stocks</string>
-
-
-    <string name="pref_display_mode_key">displayMode</string>
-    <string name="pref_display_mode_default">@string/pref_display_mode_percentage_key</string>
-
-    <string name="pref_display_mode_absolute_key">absolute</string>
-    <string name="pref_display_mode_percentage_key">percentage</string>
-
-    <string name="default_stocks_yahoo">YHOO</string>
-    <string name="default_stocks_apple">AAPL</string>
-    <string name="default_stocks_microsoft">MSFT</string>
-    <string name="default_stocks_facebook">FB</string>
-
-
-    <string name="action_change_units">@string/pref_display_mode_key</string>
+    <string name="pref_stocks_key" translatable="false">stocks</string>
+    <string name="pref_display_mode_key" translatable="false">displayMode</string>
+    <string name="pref_display_mode_default" translatable="false">@string/pref_display_mode_percentage_key</string>
+    <string name="pref_display_mode_absolute_key" translatable="false">absolute</string>
+    <string name="pref_display_mode_percentage_key" translatable="false">percentage</string>
+    <string name="default_stocks_yahoo" translatable="false">YHOO</string>
+    <string name="default_stocks_apple" translatable="false">AAPL</string>
+    <string name="default_stocks_microsoft" translatable="false">MSFT</string>
+    <string name="default_stocks_facebook" translatable="false">FB</string>
+    <string name="action_change_units" translatable="false">@string/pref_display_mode_key</string>
+    <string name="green" translatable="false">#00C853</string>
+    <string name="red" translatable="false">#D50000</string>
 
 
     <string name="dialog_title">Add Stock</string>
@@ -35,8 +30,6 @@
     <string name="error_duplicate_add">Symbol %s is already exist on your list!</string>
     <string name="error_connected_server">update stock price failed!</string>
     <string name="volume">Volume:</string>
-    <string name="green">#00C853</string>
-    <string name="red">#D50000</string>
 
     <!--content describe-->
     <string name="content_des_float_button">Add a new Stock</string>
